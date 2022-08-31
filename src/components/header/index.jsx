@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import style from './header.module.css';
 import { IconPlus } from '../../assets/icons';
 import Modal from '../modal';
+import Input from '../input';
 
 const Header = () => {
   const [showModal, setShowModal] = useState(false);
@@ -35,6 +36,14 @@ const Header = () => {
         show={showModal} 
         onSubmit={handleOnSubmit}
         onHide={handleCloseModal} >
+          <Input 
+            label="Title" 
+            id="title"
+            placeHolder="Type your title" />
+          <Input 
+            label="Description" 
+            id="description"
+            placeHolder="Type your description" />
       </Modal>   
     </>
   )

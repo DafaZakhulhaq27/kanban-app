@@ -1,0 +1,34 @@
+.formLabel{
+    font-family: 'Nunito Sans' ;
+    font-style: normal ;
+    font-weight: 700 ;
+    font-size: 12px ;  
+    color: #404040 ; 
+}
+.formContainer{
+    margin-bottom: 16px;
+}
+.formContainer:last-child{
+    margin-bottom: 0px;
+}
+.formInput{
+    border: 2px solid #EDEDED !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+}
+.formInput{
+    font-family: 'Nunito Sans' !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    color: #404040 !important;
+}
+
+.formInput::placeholder {
+    font-family: 'Nunito Sans' !important;
+    font-style: normal !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    opacity: 0.5 !important;
+    color: #404040 !important;
+}
