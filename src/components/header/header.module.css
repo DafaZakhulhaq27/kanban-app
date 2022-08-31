@@ -1,0 +1,18 @@
+.header{
+    padding: 18px 20px !important;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.navbarBrand{
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1E1F21;
+    padding:  0px !important;
+}
+
+.buttonHeader{
+    margin-left:10px !important;
+}
+
