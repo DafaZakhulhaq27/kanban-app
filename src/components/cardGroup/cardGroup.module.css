@@ -1,0 +1,115 @@
+.cardGroup{
+    width: 326px ;
+    padding: 16px !important;
+    margin-right: 16px;
+    margin-bottom: 16px;
+}
+
+.cardTitleGroup{
+    padding: 2px 8px !important; 
+    width: fit-content;
+    margin-bottom: 10px;
+}
+.titleGroup{
+    margin-bottom: 0px;
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+}
+.descGroup{
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 12px;
+    color: #1E1F21;
+    margin-bottom: 8px;
+}
+
+.cardTask{
+    padding: 16px !important;
+    margin-bottom: 12px;
+}
+.titleTask{
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 14px;
+    color: #404040;
+    margin-bottom: 0px;
+}
+.divider{
+    margin: 8px 0px ;
+    border: 1px dashed #E0E0E0;    
+}
+.progressBar{
+    width: 188px;
+    margin-right: 12px;
+}
+
+.progressContainer{
+    width: 100%;
+    margin-top: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.progressDesc{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    color: #757575;
+}
+
+/* empty */
+.cardEmptyTask{
+    padding: 8px 16px !important;
+    margin-bottom: 12px;
+}
+.titleEmpty{
+    margin-bottom: 0px;
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #757575;
+}
+
+/* dropdown */
+.dropdownMenu{
+    border: 0px !important;
+    padding: 8px 0px !important;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.08) !important;
+    border-radius: 8px !important; 
+    width: 320px;
+}
+.dropdownLink{
+    font-family: 'Nunito Sans' !important;
+    font-style: normal !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+
+.iconDropdown{
+    margin-right: 16px;
+}
+
+.confirmModalDesc{
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    color: #404040;
+}
+
+/* button new task */
+.buttonTitleNewTask{ 
+    margin-bottom: 0px;
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    margin-left: 6px;
+}

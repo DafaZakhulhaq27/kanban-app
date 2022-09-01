@@ -1,15 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter&family=Nunito+Sans:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Nunito+Sans:wght@400;600;700&display=swap');
 $theme-colors: (
   "primary": #01959F,
+  "primaryBorder": #01959F,
   "primarySurface": #F7FEFF,
-  "primaryBorder": #4DB5BC,
-  "warning": #FEEABC,
+  "warning": #FA9810,
   "warningSurface": #FFFCF5,
-  "danger": #F5B1B7,
+  "warningBorder": #FEEABC,
+  "danger": #E11428,
   "dangerSurface": #FFFAFA,
-  "success": #B8DBCA,
+  "dangerBorder": #F5B1B7,
+  "success": #43936C,
   "successSurface": #F8FBF9,
+  "successBorder": #B8DBCA,
   "secondary": #E0E0E0,
   "secondarySurface": #FAFAFA,
   "dark": #1D1F20
@@ -41,4 +43,9 @@ body {
 .btn-close{
   opacity: 1 !important;
 }
-
+.cursor-pointer{
+  cursor: pointer;
+}
+.modal-content {
+  max-width: 420px;
+}
