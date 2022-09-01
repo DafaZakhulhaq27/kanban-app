@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
-import { fetchTodo } from "./todosActions";
+import { addTodo, fetchTodo } from "./todosActions";
 
 const todosSlice = createSlice({
     name: "todos",
@@ -19,6 +19,24 @@ const todosSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       });
+
+    // add todos
+      builder.addCase(addTodo.pending, (state) => {
+        state.statusAction = "loading";
+      });
+      builder.addCase(addTodo.fulfilled, (state, action) => {
+        state.statusAction = "succeeded";
+        state.data.unshift({
+            ...action.payload,
+            items : []
+        }) ;
+        state.error = null;
+      });
+      builder.addCase(addTodo.rejected, (state, action) => {
+        state.statusAction = "failed";
+        state.error = action.payload;
+      });
+
     },
   });
 

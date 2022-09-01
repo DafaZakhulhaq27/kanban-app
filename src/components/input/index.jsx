@@ -7,13 +7,16 @@ const InputDefault = ({
     type,
     placeHolder,
     onChange,
+    required,
     id,
 }) => {
   return (
     <Form.Group className={style.formContainer} controlId={id}>
         <Form.Label className={style.formLabel}>{label}</Form.Label>
-        <Form.Control 
-            id={id}
+        <Form.Control
+            max={100}
+            min={0} 
+            required={required}
             name={id}
             className={style.formInput} 
             type={type} 
@@ -24,7 +27,8 @@ const InputDefault = ({
 }
 
 InputDefault.defaultProps = {
-    type : 'text'
+    type : 'text',
+    required : true
 }
 
 export default InputDefault

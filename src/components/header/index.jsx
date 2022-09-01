@@ -4,31 +4,44 @@ import style from './header.module.css';
 import { IconPlus } from '../../assets/icons';
 import Modal from '../modal';
 import Input from '../input';
-import { useModal } from '../../hooks';
-import LoadingBackdrop from '../loadingBackDrop';
+import { useForm, useModal } from '../../hooks';
+import {useSelector,useDispatch} from 'react-redux';
+import { addTodo } from '../../stores/todos/todosActions';
+import {todosData} from '../../stores/todos/todosSlice';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const todos = useSelector(todosData);
+
   const {
     showModal,
     handleCloseModal,
     handleShowModal
   } = useModal()
 
+  const {
+    form,
+    handleChange,
+  } = useForm()
+
   const handleOnSubmit = e => {
     e.preventDefault();
+    dispatch(addTodo(form));
     handleCloseModal();
   };
 
   return (
     <>
-      <LoadingBackdrop />
       <Navbar className={style.header}>
         <Navbar.Brand className={style.navbarBrand}>
           Product Roadmap
-          <Button className={style.buttonHeader} variant="primary" onClick={handleShowModal} >
-            <img className="icon-button" src={IconPlus} alt="icon plus" />
-            Add New Group 
-          </Button>
+          {
+            todos.status === 'succeeded' ? 
+            <Button className={style.buttonHeader} variant="primary" onClick={handleShowModal} >
+              <img className="icon-button" src={IconPlus} alt="icon plus" />
+              Add New Group 
+            </Button> : null
+          }
         </Navbar.Brand>
       </Navbar> 
       <Modal 
@@ -38,10 +51,12 @@ const Header = () => {
         onSubmit={handleOnSubmit}
         onHide={handleCloseModal} >
           <Input 
+            onChange={handleChange}
             label="Title" 
             id="title"
             placeHolder="Type your title" />
           <Input 
+            onChange={handleChange}
             label="Description" 
             id="description"
             placeHolder="Type your description" />
