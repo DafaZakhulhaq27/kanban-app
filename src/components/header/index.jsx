@@ -5,6 +5,7 @@ import { IconPlus } from '../../assets/icons';
 import Modal from '../modal';
 import Input from '../input';
 import { useModal } from '../../hooks';
+import LoadingBackdrop from '../loadingBackDrop';
 
 const Header = () => {
   const {
@@ -20,6 +21,7 @@ const Header = () => {
 
   return (
     <>
+      <LoadingBackdrop />
       <Navbar className={style.header}>
         <Navbar.Brand className={style.navbarBrand}>
           Product Roadmap
@@ -43,7 +45,7 @@ const Header = () => {
             label="Description" 
             id="description"
             placeHolder="Type your description" />
-      </Modal>   
+      </Modal>  
     </>
   )
 }
