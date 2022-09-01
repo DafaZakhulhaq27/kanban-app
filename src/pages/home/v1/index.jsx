@@ -4,6 +4,7 @@ import {todosData} from '../../../stores/todos/todosSlice';
 import {fetchTodo} from '../../../stores/todos/todosActions';
 import { CardGroup, Header } from '../../../components'
 import style from './home.module.css';
+import Loading from './loading';
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const Home = () => {
       <div className={style.homeContainer}>
         {
           todos.status === 'loading' ?
-          <p>Loading</p> :
+          <Loading />  :
           todos.data.length ?
           todos.data.map((data,index) => {
             let type = 'primary'
