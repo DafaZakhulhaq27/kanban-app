@@ -8,7 +8,21 @@ export const fetchTodo = createAsyncThunk("todos", async (form) => {
       const response = await axios.get("/todos",{
         headers: { Authorization: `Bearer ${TOKEN}` },
       });
-      return response.data;
+
+      let todos = []
+
+      for(let i = 0 ; i < response.data.length ; i++){
+        const responseItems = await axios.get(`/todos/${response.data[i].id}/items`,{
+            headers: { Authorization: `Bearer ${TOKEN}` },
+        });    
+
+        todos.push({
+            ...response.data[i],
+            items : responseItems.data
+        })
+      }
+
+      return todos;
     } catch (err) {
       return errorResponse(err);
     }

@@ -23,27 +23,6 @@ const CardGroup = ({
         handleCloseModal();
     };
 
-    const task = [
-        {
-            "id": 1,
-            "name": "Redesign page",
-            "done": null,
-            "todo_id": 1,
-            "created_at": "2021-04-21T00:12:06.116Z",
-            "updated_at": "2021-04-21T00:12:06.116Z",
-            "progress_percentage": null
-        },
-        {
-            "id": 2,
-            "name": "Redesign page part 2",
-            "done": null,
-            "todo_id": 1,
-            "created_at": "2021-04-21T00:14:38.397Z",
-            "updated_at": "2021-04-21T00:14:38.397Z",
-            "progress_percentage": 60
-        }
-    ]
-
     return (
         <>
             <Card bg={`${type}Surface`} border={`${type}Border`} className={style.cardGroup}>
@@ -52,8 +31,8 @@ const CardGroup = ({
                 </Card>  
                 <p className={style.descGroup}>{todo.description}</p>   
                 {
-                    task.length ?
-                    task.map((data,index) => (
+                    todo.items.length ?
+                    todo.items.map((data,index) => (
                         <CardItem  key={index} task={data} />
                     ))
                     :

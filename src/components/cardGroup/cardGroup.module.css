@@ -1,5 +1,6 @@
 .cardGroup{
     width: 326px ;
+    height: fit-content;
     padding: 16px !important;
     margin-right: 16px;
     margin-bottom: 16px;
