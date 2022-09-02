@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const Home = () => {
   const dispatch = useDispatch();
   const todos = useSelector(todosData);
+  let indicator =  1;
 
   useEffect(() => {
     dispatch(fetchTodo());
@@ -31,7 +32,6 @@ const Home = () => {
           todos.data.length ?
           todos.data.map((data,index) => {
             let type = 'primary'
-            const indicator = Math.floor(Math.random() * (4 - 1 + 1) + 1)
 
             switch (indicator) {
               case 1:
@@ -47,10 +47,17 @@ const Home = () => {
                 type = 'success' ;
                 break;                                               
               default:
+                type = 'primary' ;
                 break;
-            }
+              }
 
-            return <CardGroup type={type} key={index} todo={data} />
+              if(indicator < 4){
+                indicator++
+              }else{
+                indicator = 1
+              }
+            
+              return <CardGroup type={type} index={index} key={index} todo={data} />
           }) : 
           <p>Todos Not Found</p>
         }

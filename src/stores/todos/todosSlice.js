@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
-import { addTodo, fetchTodo } from "./todosActions";
+import { addTaskItem, addTodo, fetchTaskItem, fetchTodo } from "./todosActions";
 
 const todosSlice = createSlice({
     name: "todos",
@@ -20,6 +20,25 @@ const todosSlice = createSlice({
         state.error = action.payload;
       });
 
+     // fetch task items
+      builder.addCase(fetchTaskItem.fulfilled, (state, action) => {
+          state.data[action.payload.index] = {
+            ...state.data[action.payload.index],
+            isLoading : false,
+          }
+          state.error = null;
+      });
+      builder.addCase(fetchTaskItem.rejected, (state, action) => {
+        console.log(action.payload.index,'action.payload.index')
+        state.data[action.payload.index] = {
+            ...state.data[action.payload.index],
+            items : action.payload.response,
+            isLoading : false,
+        }
+        state.error = action.payload.response;
+      });
+
+
     // add todos
       builder.addCase(addTodo.pending, (state) => {
         state.statusAction = "loading";
@@ -36,6 +55,23 @@ const todosSlice = createSlice({
         state.statusAction = "failed";
         state.error = action.payload;
       });
+
+    // add task
+    builder.addCase(addTaskItem.pending, (state) => {
+        state.statusAction = "loading";
+    });
+    builder.addCase(addTaskItem.fulfilled, (state, action) => {
+        state.statusAction = "succeeded";
+        state.data.unshift({
+            ...action.payload,
+            items : []
+        }) ;
+        state.error = null;
+    });
+    builder.addCase(addTaskItem.rejected, (state, action) => {
+        state.statusAction = "failed";
+        state.error = action.payload;
+    });
 
     },
   });

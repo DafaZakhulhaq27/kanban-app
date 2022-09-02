@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Input from '../input';
 import Modal from '../modal';
@@ -7,11 +7,25 @@ import { IconPlusRounded } from '../../assets/icons';
 import style from './cardGroup.module.css';
 import CardItem from './cardItem';
 import CardEmpty from './cardEmpty';
+import { useDispatch, useSelector } from 'react-redux';
+import { todosData } from '../../stores/todos/todosSlice';
+import { fetchTaskItem } from '../../stores/todos/todosActions';
+import Loading from './loading';
 
 const CardGroup = ({
         type,
+        index,
         todo,
     }) => {
+    const dispatch = useDispatch();
+    const todos = useSelector(todosData);
+
+    useEffect(() => {
+        dispatch(fetchTaskItem({
+            id : todo.id,
+            index : index
+        }));
+    },[])
 
     const {
         showModal,
@@ -22,15 +36,17 @@ const CardGroup = ({
         e.preventDefault();
         handleCloseModal();
     };
-
+    
     return (
         <>
             <Card bg={`${type}Surface`} border={`${type}Border`} className={style.cardGroup}>
                 <Card bg={`${type}Surface`} border={`${type}Border`} className={style.cardTitleGroup}>
                     <p className={`${style.titleGroup} text-${type}`}>{todo.title}</p> 
                 </Card>  
-                <p className={style.descGroup}>{todo.description}</p>   
+                <p className={style.descGroup}>{todo.description}</p> 
                 {
+                    todo.isLoading ? 
+                    <Loading /> :
                     todo.items.length ?
                     todo.items.map((data,index) => (
                         <CardItem  key={index} task={data} />
