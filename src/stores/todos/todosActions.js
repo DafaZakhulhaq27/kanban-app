@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axios, errorResponse, toastError, toastSuccess } from "../../config";
 import { toast } from 'react-toastify';
 
-const TOKEN  = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0OTIsImV4cCI6MTY2MjM5MzIwNX0.kPU4n56bXKQvj7aNwNOK3QqVqnYsPzaDPGKm1GXKYNg' ;
+const TOKEN  = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0OTIsImV4cCI6MTY2MjQ0NjU2NH0.fOrZuYmRNlGBFYpaQbaW9KBzTUuYfuEX5pKJV3IqD20' ;
 
 export const fetchTodo = createAsyncThunk("todos", async (form) => {
     try {
@@ -92,12 +92,33 @@ export const moveTaskItem = createAsyncThunk("task/move", async (params) => {
         headers: { Authorization: `Bearer ${TOKEN}` },
       });
 
-      toast('Updaate Task Item Success', toastSuccess)
+      toast('Move Task Item Success', toastSuccess)
 
       return {
         index : params.index,
         indexPrev : params.indexPrev,
         indexNext : params.indexNext,
+        response : response.data
+      };      
+    } catch (err) {
+      toast(errorResponse(err), toastError)
+      return {
+        index : params.index,
+        response : errorResponse(err)
+      }; 
+    }
+});
+
+export const updateTaskItem = createAsyncThunk("task/update", async (params) => {
+    try {
+      const response = await axios.patch(`/todos/${params.idGroup}/items/${params.idTask}`, params.form,{
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      });
+      toast('Update Task Item Success', toastSuccess)
+
+      return {
+        index : params.index,
+        indexGroup : params.indexGroup,
         response : response.data
       };      
     } catch (err) {

@@ -9,11 +9,13 @@ const InputDefault = ({
     onChange,
     required,
     id,
+    value,
 }) => {
   return (
     <Form.Group className={style.formContainer} controlId={id}>
         <Form.Label className={style.formLabel}>{label}</Form.Label>
         <Form.Control
+            value={value}
             max={100}
             min={0} 
             required={required}

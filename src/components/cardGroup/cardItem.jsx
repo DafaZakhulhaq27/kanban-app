@@ -3,13 +3,13 @@ import ProgressBar from 'react-bootstrap/ProgressBar';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { IconArrowLeft, IconArrowRight, IconCheck, IconEdit, IconTrash } from '../../assets/icons';
 import style from './cardGroup.module.css';
-import { useModal } from '../../hooks';
+import { useForm, useModal } from '../../hooks';
 import Modal from '../modal';
 import CustomToggle from './customToggle';
 import { Input } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { todosData } from '../../stores/todos/todosSlice';
-import { moveTaskItem } from '../../stores/todos/todosActions';
+import { moveTaskItem, updateTaskItem } from '../../stores/todos/todosActions';
 
 
 const CardItem = ({
@@ -19,7 +19,6 @@ const CardItem = ({
     }) => {
     const dispatch = useDispatch();
     const todos = useSelector(todosData);
-    console.log(task,'task.progress_percentage')
     const percentage = task.progress_percentage ? task.progress_percentage : 0
 
     // delete
@@ -34,6 +33,11 @@ const CardItem = ({
     };
 
     // update
+    const {
+        form,
+        setForm,
+        handleChange,
+      } = useForm()
     const {
         showModal : showModalUpdate,
         handleCloseModal : handleCloseModalUpdate,
@@ -55,7 +59,17 @@ const CardItem = ({
 
     const handleOnUpdate = e => {
         e.preventDefault();
-        handleCloseModalConfirm();
+        dispatch(updateTaskItem({
+            idGroup : task.todo_id,
+            indexGroup :indexGroup,
+            idTask : task.id,
+            index : index,
+            form : {
+                ...form,
+                target_todo_id : task.todo_id
+            } 
+        }));
+        handleCloseModalUpdate();
     };
 
     return (
@@ -78,20 +92,34 @@ const CardItem = ({
                     <Dropdown.Menu align="end" className={style.dropdownMenu}>
                         {
                             todos.data.length !== indexGroup+1 ?
-                            <Dropdown.Item onClick={() => handleOnMove(indexGroup+1)} className={style.dropdownLink}> 
+                            <Dropdown.Item 
+                                onClick={() => handleOnMove(indexGroup+1)} 
+                                className={style.dropdownLink}> 
                                 <img className={style.iconDropdown} src={IconArrowRight} alt="icon dropdown" /> Move Right 
                             </Dropdown.Item> : null
                         }
                         {
                             indexGroup !== 0 ?
-                            <Dropdown.Item onClick={() => handleOnMove(indexGroup-1)} className={style.dropdownLink}> 
+                            <Dropdown.Item 
+                                onClick={() => handleOnMove(indexGroup-1)} 
+                                className={style.dropdownLink}> 
                                 <img className={style.iconDropdown} src={IconArrowLeft} alt="icon dropdown" /> Move Left 
                             </Dropdown.Item> : null
                         }
-                        <Dropdown.Item className={style.dropdownLink} onClick={handleShowModalUpdate}> 
+                        <Dropdown.Item 
+                            className={style.dropdownLink} 
+                            onClick={() => {
+                                setForm({
+                                    name : task.name,
+                                    progress_percentage : task.progress_percentage
+                                })
+                                handleShowModalUpdate()
+                            }}> 
                             <img className={style.iconDropdown} src={IconEdit} alt="icon dropdown" /> Edit 
                         </Dropdown.Item>
-                        <Dropdown.Item onClick={handleShowModalConfirm} className={style.dropdownLink}> 
+                        <Dropdown.Item 
+                            onClick={handleShowModalConfirm} 
+                            className={style.dropdownLink}> 
                             <img className={style.iconDropdown} src={IconTrash} alt="icon dropdown" /> Delete 
                         </Dropdown.Item>
                     </Dropdown.Menu>
@@ -115,12 +143,16 @@ const CardItem = ({
                     show={showModalUpdate} 
                     onSubmit={handleOnUpdate}
                     onHide={handleCloseModalUpdate} >
-                    <Input 
+                    <Input
+                        onChange={handleChange}  
+                        value={form.name}
                         label="Task Name" 
                         id="name"
                         placeHolder="Type your task name" />
                     <div className="w-50">
-                        <Input 
+                        <Input
+                            onChange={handleChange}  
+                            value={form.progress_percentage}
                             type="number"
                             label="Progress" 
                             id="progress_percentage"
