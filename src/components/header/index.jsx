@@ -43,6 +43,9 @@ const Header = () => {
             </Button> : null
           }
         </Navbar.Brand>
+        <Button className={style.buttonHeader} variant="danger" onClick={handleShowModal} >
+          Logout
+        </Button>
       </Navbar> 
       <Modal 
         buttonSubmitTitle="Save Group Task"
