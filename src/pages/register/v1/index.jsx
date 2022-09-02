@@ -4,14 +4,13 @@ import style from '../../login/v1//login.module.css'
 import Form from 'react-bootstrap/Form';
 import { Input } from '../../../components';
 import Button from 'react-bootstrap/Button';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { HOME, LOGIN } from '../../../navigation/routesName';
 import { useForm } from '../../../hooks';
 import { axios, errorResponse, toastError } from '../../../config';
 import { toast } from 'react-toastify';
 
 const Register = () => {
-    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
 
     const {
@@ -25,7 +24,7 @@ const Register = () => {
         try {
             const response = await axios.post("/signup", form);
             localStorage.setItem('token_kanban', response.data.auth_token);
-            navigate(HOME);
+            window.location.href = HOME
         } catch (err) {
             toast(errorResponse(err), toastError)
         } finally {
