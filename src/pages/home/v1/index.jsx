@@ -5,7 +5,6 @@ import {fetchTodo} from '../../../stores/todos/todosActions';
 import { CardGroup, Header, LoadingBackDrop } from '../../../components'
 import style from './home.module.css';
 import Loading from './loading';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
@@ -19,7 +18,6 @@ const Home = () => {
 
   return (
     <>
-      <ToastContainer />
       {
         todos.statusAction === 'loading' ?
         <LoadingBackDrop /> : null

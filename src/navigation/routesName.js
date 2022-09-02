@@ -1,6 +1,6 @@
 import { V1 } from "./versions";
 
-const BASEHOME = '/';
+const BASEHOME = '';
 const BASELOGIN = '/login';
 const BASEREGISTER = '/register';
 

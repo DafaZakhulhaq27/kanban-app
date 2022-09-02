@@ -13,7 +13,7 @@ import { BASEHOME, BASELOGIN, BASEREGISTER, HOME, LOGIN, REGISTER } from "./rout
         <Routes>
           <Route
               path={BASEHOME}
-              element={<Navigate to={HOME} replace />}
+              element={<Navigate to={HOME} />}
           />            
           <Route
             path={HOME}
