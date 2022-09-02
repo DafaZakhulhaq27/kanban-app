@@ -15,3 +15,9 @@ I think the first problem I found was the separation of the todo group endpoint 
 2. **Update Data after Action**
 In my opinion, the second obstacle is when after taking actions and updating data, so in this project I only did fetcing data once, namely when the webapp was first loaded, after performing the actions the updated data was purely data manipulation from the frontend. I think this will greatly reduce the performance of the webapp
 
+Here's a screenshot from the website
+
+<img width="1552" alt="image" src="https://user-images.githubusercontent.com/25057235/188149747-694d176d-7f8e-45ab-97d5-d99483174dbf.png">
+<img width="1552" alt="image" src="https://user-images.githubusercontent.com/25057235/188149831-a2f1b464-f3da-458b-aa8f-3ebfe9b0354a.png">
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/25057235/188149884-091f9af7-d9db-4a02-8273-bcc30b8ac43d.png">
+<img width="1552" alt="image" src="https://user-images.githubusercontent.com/25057235/188149942-8eeebf73-505c-424c-b784-5cfa3b1f3868.png">
