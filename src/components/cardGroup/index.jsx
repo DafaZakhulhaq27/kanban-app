@@ -56,8 +56,8 @@ const CardGroup = ({
                     todo.isLoading ? 
                     <Loading /> :
                     todo.items.length ?
-                    todo.items.map((data,index) => (
-                        <CardItem  key={index} task={data} />
+                    todo.items.map((data,indexTask) => (
+                        <CardItem indexGroup={index} index={indexTask} key={indexTask} task={data} />
                     ))
                     :
                     <CardEmpty />

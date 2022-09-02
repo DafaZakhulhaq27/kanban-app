@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
-import { addTaskItem, addTodo, fetchTaskItem, fetchTodo } from "./todosActions";
+import { addTaskItem, addTodo, fetchTaskItem, fetchTodo, moveTaskItem } from "./todosActions";
 
 const todosSlice = createSlice({
     name: "todos",
@@ -60,22 +60,42 @@ const todosSlice = createSlice({
         state.error = action.payload;
       });
 
-    // add task
-    builder.addCase(addTaskItem.pending, (state) => {
-        state.statusAction = "loading";
-    });
-    builder.addCase(addTaskItem.fulfilled, (state, action) => {
-        const index = action.payload.index ;
-        const task = action.payload.response ;
+        // add task
+        builder.addCase(addTaskItem.pending, (state) => {
+            state.statusAction = "loading";
+        });
+        builder.addCase(addTaskItem.fulfilled, (state, action) => {
+            const index = action.payload.index ;
+            const task = action.payload.response ;
 
-        state.statusAction = "succeeded";
-        state.data[index].items.unshift(task) ;
-        state.error = null;
-    });
-    builder.addCase(addTaskItem.rejected, (state, action) => {
-        state.statusAction = "failed";
-        state.error = action.payload;
-    });
+            state.statusAction = "succeeded";
+            state.data[index].items.unshift(task) ;
+            state.error = null;
+        });
+        builder.addCase(addTaskItem.rejected, (state, action) => {
+            state.statusAction = "failed";
+            state.error = action.payload;
+        });
+
+        // move task
+        builder.addCase(moveTaskItem.pending, (state) => {
+            state.statusAction = "loading";
+        });
+        builder.addCase(moveTaskItem.fulfilled, (state, action) => {
+            const index = action.payload.index ;
+            const indexPrev = action.payload.indexPrev ;
+            const indexNext = action.payload.indexNext ;
+            const task = action.payload.response ;
+
+            state.statusAction = "succeeded";
+            state.data[indexPrev].items.splice(index,1) ;
+            state.data[indexNext].items.unshift(task) ;
+            state.error = null;
+        });
+        builder.addCase(moveTaskItem.rejected, (state, action) => {
+            state.statusAction = "failed";
+            state.error = action.payload;
+        });
 
     },
   });
