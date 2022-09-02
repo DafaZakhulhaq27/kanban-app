@@ -4,6 +4,7 @@ import {
     Route,
     Navigate,
   } from "react-router-dom";
+import { ProtectedRoute } from "../components";
 import { Home, Login, Register } from "../pages";
 import { BASEHOME, BASELOGIN, BASEREGISTER, HOME, LOGIN, REGISTER } from "./routesName";
 
@@ -18,7 +19,9 @@ import { BASEHOME, BASELOGIN, BASEREGISTER, HOME, LOGIN, REGISTER } from "./rout
           <Route
             path={HOME}
             element={
-              <Home />
+              <ProtectedRoute isLogin>
+                <Home />
+              </ProtectedRoute>              
             }
           />
 
@@ -29,7 +32,9 @@ import { BASEHOME, BASELOGIN, BASEREGISTER, HOME, LOGIN, REGISTER } from "./rout
           <Route
             path={LOGIN}
             element={
-              <Login />
+              <ProtectedRoute>
+                <Login />
+              </ProtectedRoute>
             }
           />
 
@@ -40,7 +45,9 @@ import { BASEHOME, BASELOGIN, BASEREGISTER, HOME, LOGIN, REGISTER } from "./rout
           <Route
             path={REGISTER}
             element={
-              <Register />
+              <ProtectedRoute>
+                <Register />
+              </ProtectedRoute>
             }
           />
           

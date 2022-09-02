@@ -8,9 +8,12 @@ import { useForm, useModal } from '../../hooks';
 import {useSelector,useDispatch} from 'react-redux';
 import { addTodo } from '../../stores/todos/todosActions';
 import {todosData} from '../../stores/todos/todosSlice';
+import { useNavigate } from 'react-router-dom';
+import { LOGIN } from '../../navigation/routesName';
 
 const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const todos = useSelector(todosData);
 
   const {
@@ -43,7 +46,10 @@ const Header = () => {
             </Button> : null
           }
         </Navbar.Brand>
-        <Button className={style.buttonHeader} variant="danger" onClick={handleShowModal} >
+        <Button className={style.buttonHeader} variant="danger" onClick={() => {
+          localStorage.clear();
+          navigate(LOGIN);
+        }} >
           Logout
         </Button>
       </Navbar> 
