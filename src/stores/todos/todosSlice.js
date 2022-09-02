@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
-import { addTaskItem, addTodo, fetchTaskItem, fetchTodo, moveTaskItem, updateTaskItem } from "./todosActions";
+import { addTaskItem, addTodo, deleteTaskItem, fetchTaskItem, fetchTodo, moveTaskItem, updateTaskItem } from "./todosActions";
 
 const todosSlice = createSlice({
     name: "todos",
@@ -111,6 +111,23 @@ const todosSlice = createSlice({
             state.error = null;
         });
         builder.addCase(updateTaskItem.rejected, (state, action) => {
+            state.statusAction = "failed";
+            state.error = action.payload;
+        });
+
+        // delete task
+        builder.addCase(deleteTaskItem.pending, (state) => {
+            state.statusAction = "loading";
+        });
+        builder.addCase(deleteTaskItem.fulfilled, (state, action) => {
+            const index = action.payload.index ;
+            const indexGroup = action.payload.indexGroup ;
+
+            state.statusAction = "succeeded";
+            state.data[indexGroup].items.splice(index,1) ;
+            state.error = null;
+        });
+        builder.addCase(deleteTaskItem.rejected, (state, action) => {
             state.statusAction = "failed";
             state.error = action.payload;
         });

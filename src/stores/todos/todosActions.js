@@ -129,3 +129,25 @@ export const updateTaskItem = createAsyncThunk("task/update", async (params) => 
       }; 
     }
 });
+
+
+export const deleteTaskItem = createAsyncThunk("task/delete", async (params) => {
+    try {
+      const response = await axios.delete(`/todos/${params.idGroup}/items/${params.idTask}`,{
+        headers: { Authorization: `Bearer ${TOKEN}` },
+      });
+      toast('Delete Task Item Success', toastSuccess)
+
+      return {
+        index : params.index,
+        indexGroup : params.indexGroup,
+        response : response.data
+      };      
+    } catch (err) {
+      toast(errorResponse(err), toastError)
+      return {
+        index : params.index,
+        response : errorResponse(err)
+      }; 
+    }
+});

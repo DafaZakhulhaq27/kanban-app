@@ -9,7 +9,7 @@ import CustomToggle from './customToggle';
 import { Input } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { todosData } from '../../stores/todos/todosSlice';
-import { moveTaskItem, updateTaskItem } from '../../stores/todos/todosActions';
+import { deleteTaskItem, moveTaskItem, updateTaskItem } from '../../stores/todos/todosActions';
 
 
 const CardItem = ({
@@ -29,6 +29,12 @@ const CardItem = ({
       } = useModal()
     const handleOnDelete = e => {
         e.preventDefault();
+        dispatch(deleteTaskItem({
+            idGroup : task.todo_id,
+            indexGroup :indexGroup,
+            idTask : task.id,
+            index : index,
+        }));        
         handleCloseModalConfirm();
     };
 
