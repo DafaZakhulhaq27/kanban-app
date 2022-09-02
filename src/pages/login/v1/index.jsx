@@ -39,6 +39,7 @@ const Login = () => {
             <h3 className="text-center">Login</h3>
             <Form onSubmit={handleSubmit}>        
                 <Input 
+                    type="email"
                     onChange={handleChange}
                     label="Email" 
                     id="email"

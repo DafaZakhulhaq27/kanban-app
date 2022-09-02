@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { axios, errorResponse, toastError, toastSuccess } from "../../config";
 import { toast } from 'react-toastify';
 
-const TOKEN  = 'eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0OTIsImV4cCI6MTY2MjQ0NjU2NH0.fOrZuYmRNlGBFYpaQbaW9KBzTUuYfuEX5pKJV3IqD20' ;
+const TOKEN  = localStorage.getItem('token_kanban') ;
 
 export const fetchTodo = createAsyncThunk("todos", async (form) => {
     try {
