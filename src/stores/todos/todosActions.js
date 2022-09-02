@@ -32,13 +32,17 @@ export const fetchTodo = createAsyncThunk("todos", async (form) => {
 
 export const fetchTaskItem = createAsyncThunk("todos/task", async (params) => {
     try {
-        const responseItems = await axios.get(`/todos/${params.id}/items`,{
+        const response = await axios.get(`/todos/${params.id}/items`,{
             headers: { Authorization: `Bearer ${TOKEN}` },
         });    
 
+        const sortedNewest = response.data.sort(
+            (a, b) =>  new Date(b.updated_at) - new Date(a.updated_at)  ,
+        );
+
         return {
             index : params.index,
-            response : responseItems.data
+            response : sortedNewest
         };
     } catch (err) {
         return {
@@ -62,17 +66,23 @@ export const addTodo = createAsyncThunk("todos/add", async (form) => {
     }
 });
 
-export const addTaskItem = createAsyncThunk("task/add", async (id,form) => {
+export const addTaskItem = createAsyncThunk("task/add", async (params) => {
     try {
-      const response = await axios.post(`/todos/${id}/items`, form,{
+      const response = await axios.post(`/todos/${params.id}/items`, params.form,{
         headers: { Authorization: `Bearer ${TOKEN}` },
       });
 
       toast('Add Task Item Success', toastSuccess)
-      return response.data ;
+      return {
+        index : params.index,
+        response : response.data
+      };      
     } catch (err) {
       toast(errorResponse(err), toastError)
-      return errorResponse(err);
+      return {
+        index : params.index,
+        response : errorResponse(err)
+      }; 
     }
 });
 

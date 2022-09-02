@@ -22,17 +22,20 @@ const todosSlice = createSlice({
 
      // fetch task items
       builder.addCase(fetchTaskItem.fulfilled, (state, action) => {
-          state.data[action.payload.index] = {
-            ...state.data[action.payload.index],
+        const index = action.payload.index ;
+
+          state.data[index] = {
+            ...state.data[index],
+            items : action.payload.response,
             isLoading : false,
           }
           state.error = null;
       });
       builder.addCase(fetchTaskItem.rejected, (state, action) => {
-        console.log(action.payload.index,'action.payload.index')
-        state.data[action.payload.index] = {
-            ...state.data[action.payload.index],
-            items : action.payload.response,
+        const index = action.payload.index ;
+
+        state.data[index] = {
+            ...state.data[index],
             isLoading : false,
         }
         state.error = action.payload.response;
@@ -47,7 +50,8 @@ const todosSlice = createSlice({
         state.statusAction = "succeeded";
         state.data.unshift({
             ...action.payload,
-            items : []
+            items : [],
+            isLoading : false,
         }) ;
         state.error = null;
       });
@@ -61,11 +65,11 @@ const todosSlice = createSlice({
         state.statusAction = "loading";
     });
     builder.addCase(addTaskItem.fulfilled, (state, action) => {
+        const index = action.payload.index ;
+        const task = action.payload.response ;
+
         state.statusAction = "succeeded";
-        state.data.unshift({
-            ...action.payload,
-            items : []
-        }) ;
+        state.data[index].items.unshift(task) ;
         state.error = null;
     });
     builder.addCase(addTaskItem.rejected, (state, action) => {

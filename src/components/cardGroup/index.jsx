@@ -2,14 +2,13 @@ import React, { useEffect } from 'react'
 import Card from 'react-bootstrap/Card';
 import Input from '../input';
 import Modal from '../modal';
-import { useModal } from '../../hooks';
+import { useForm, useModal } from '../../hooks';
 import { IconPlusRounded } from '../../assets/icons';
 import style from './cardGroup.module.css';
 import CardItem from './cardItem';
 import CardEmpty from './cardEmpty';
-import { useDispatch, useSelector } from 'react-redux';
-import { todosData } from '../../stores/todos/todosSlice';
-import { fetchTaskItem } from '../../stores/todos/todosActions';
+import { useDispatch } from 'react-redux';
+import { addTaskItem, fetchTaskItem } from '../../stores/todos/todosActions';
 import Loading from './loading';
 
 const CardGroup = ({
@@ -18,7 +17,6 @@ const CardGroup = ({
         todo,
     }) => {
     const dispatch = useDispatch();
-    const todos = useSelector(todosData);
 
     useEffect(() => {
         dispatch(fetchTaskItem({
@@ -28,12 +26,22 @@ const CardGroup = ({
     },[])
 
     const {
+        form,
+        handleChange,
+    } = useForm()
+
+    const {
         showModal,
         handleCloseModal,
         handleShowModal
     } = useModal()
     const handleCreateTask = e => {
         e.preventDefault();
+        dispatch(addTaskItem({
+            index : index,
+            id : todo.id,
+            form : form   
+        }));
         handleCloseModal();
     };
     
@@ -65,12 +73,14 @@ const CardGroup = ({
                 show={showModal} 
                 onSubmit={handleCreateTask}
                 onHide={handleCloseModal} >
-                <Input 
+                <Input
+                    onChange={handleChange} 
                     label="Task Name" 
                     id="name"
                     placeHolder="Type your task" />
                 <div className="w-50">
                     <Input 
+                        onChange={handleChange}
                         type="number"
                         label="Progress" 
                         id="progress_percentage"
