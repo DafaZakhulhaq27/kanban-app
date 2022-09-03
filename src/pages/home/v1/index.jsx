@@ -28,6 +28,9 @@ const Home = () => {
     const indexSource = result.source.droppableId
     const task = todos.data[indexSource].items[taskIndex]
 
+    if(indexNext === indexSource){
+      return
+    }
     dispatch(draggedTask({
       indexPrev :indexSource,
       indexNext : indexNext,
