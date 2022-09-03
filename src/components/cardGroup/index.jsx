@@ -10,6 +10,7 @@ import CardEmpty from './cardEmpty';
 import { useDispatch } from 'react-redux';
 import { addTaskItem, fetchTaskItem } from '../../stores/todos/todosActions';
 import Loading from './loading';
+import { Droppable } from "react-beautiful-dnd";
 
 const CardGroup = ({
         type,
@@ -47,26 +48,35 @@ const CardGroup = ({
     
     return (
         <>
-            <Card bg={`${type}Surface`} border={`${type}Border`} className={style.cardGroup}>
-                <Card bg={`${type}Surface`} border={`${type}Border`} className={style.cardTitleGroup}>
-                    <p className={`${style.titleGroup} text-${type}`}>{todo.title}</p> 
-                </Card>  
-                <p className={style.descGroup}>{todo.description}</p> 
-                {
-                    todo.isLoading ? 
-                    <Loading /> :
-                    todo.items.length ?
-                    todo.items.map((data,indexTask) => (
-                        <CardItem indexGroup={index} index={indexTask} key={indexTask} task={data} />
-                    ))
-                    :
-                    <CardEmpty />
-                }
-                <div className="d-flex align-items-center cursor-pointer" onClick={handleShowModal}>
-                    <img src={IconPlusRounded} alt="icon plus" width={16.6} height={16.6} />
-                    <p className={style.buttonTitleNewTask}>New Task</p>
-                </div>
-            </Card>    
+                    <Card  bg={`${type}Surface`} border={`${type}Border`} className={style.cardGroup}>
+                        <Card bg={`${type}Surface`} border={`${type}Border`} className={style.cardTitleGroup}>
+                            <p className={`${style.titleGroup} text-${type}`}>{todo.title}</p> 
+                        </Card>  
+                        <p className={style.descGroup}>{todo.description}</p> 
+                        {
+                            todo.isLoading ? 
+                            <Loading /> :
+                            <Droppable droppableId={`${index}`}>
+                                {(provided) => (
+                                <div  {...provided.droppableProps} ref={provided.innerRef}>
+                                    {
+                                        todo.items.length ?
+                                        todo.items.map((data,indexTask) => (
+                                            <CardItem indexGroup={index} index={indexTask} key={indexTask} task={data} />
+                                        )) :
+                                        <CardEmpty />
+                                    }
+                                    {provided.placeholder}
+                                </div>
+                                )}
+                            </Droppable>     
+                            
+                        }
+                        <div className="d-flex align-items-center cursor-pointer" onClick={handleShowModal}>
+                            <img src={IconPlusRounded} alt="icon plus" width={16.6} height={16.6} />
+                            <p className={style.buttonTitleNewTask}>New Task</p>
+                        </div>
+                    </Card> 
             <Modal 
                 buttonSubmitTitle="Save Task"
                 title="Create Task"

@@ -10,7 +10,7 @@ import { Input } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { todosData } from '../../stores/todos/todosSlice';
 import { deleteTaskItem, moveTaskItem, updateTaskItem } from '../../stores/todos/todosActions';
-
+import { Draggable } from "react-beautiful-dnd";
 
 const CardItem = ({
         task,
@@ -79,94 +79,109 @@ const CardItem = ({
     };
 
     return (
-        <Card bg="secondarySurface" border="secondaryBorder" className={style.cardTask}>
-            <p className={style.titleTask}>{task.name}</p> 
-            <div className={style.divider}></div>
-            <div className={style.progressContainer}>
-                <div className="d-flex align-items-center">
-                    <ProgressBar className={style.progressBar} variant={percentage === 100 ? 'success' : 'primary'} now={percentage} />
-                    {
-                        percentage === 100 ? 
-                        <img src={IconCheck} alt="icon checked" width={16} height={16} /> :
-                        <span className={style.progressDesc}>{percentage}%</span> 
-                    }
-                </div>
+        <>
+            <Draggable draggableId={`${indexGroup}_${index}`} index={index}>
+                {(provided, snapshot) => {
+                    return (
+                        <Card  
+                            ref={provided.innerRef}
+                            snapshot={snapshot}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps} 
+                            bg="secondarySurface" 
+                            border="secondaryBorder" 
+                            className={style.cardTask}>
+                            <p className={style.titleTask}>{task.name}</p> 
+                            <div className={style.divider}></div>
+                            <div className={style.progressContainer}>
+                                <div className="d-flex align-items-center">
+                                    <ProgressBar className={style.progressBar} variant={percentage === 100 ? 'success' : 'primary'} now={percentage} />
+                                    {
+                                        percentage === 100 ? 
+                                        <img src={IconCheck} alt="icon checked" width={16} height={16} /> :
+                                        <span className={style.progressDesc}>{percentage}%</span> 
+                                    }
+                                </div>
+            
+                                {/* dropdown Menu */}
+                                <Dropdown>
+                                    <Dropdown.Toggle as={CustomToggle} />
+                                    <Dropdown.Menu align="end" className={style.dropdownMenu}>
+                                        {
+                                            todos.data.length !== indexGroup+1 ?
+                                            <Dropdown.Item 
+                                                onClick={() => handleOnMove(indexGroup+1)} 
+                                                className={style.dropdownLink}> 
+                                                <img className={style.iconDropdown} src={IconArrowRight} alt="icon dropdown" /> Move Right 
+                                            </Dropdown.Item> : null
+                                        }
+                                        {
+                                            indexGroup !== 0 ?
+                                            <Dropdown.Item 
+                                                onClick={() => handleOnMove(indexGroup-1)} 
+                                                className={style.dropdownLink}> 
+                                                <img className={style.iconDropdown} src={IconArrowLeft} alt="icon dropdown" /> Move Left 
+                                            </Dropdown.Item> : null
+                                        }
+                                        <Dropdown.Item 
+                                            className={style.dropdownLink} 
+                                            onClick={() => {
+                                                setForm({
+                                                    name : task.name,
+                                                    progress_percentage : task.progress_percentage
+                                                })
+                                                handleShowModalUpdate()
+                                            }}> 
+                                            <img className={style.iconDropdown} src={IconEdit} alt="icon dropdown" /> Edit 
+                                        </Dropdown.Item>
+                                        <Dropdown.Item 
+                                            onClick={handleShowModalConfirm} 
+                                            className={style.dropdownLink}> 
+                                            <img className={style.iconDropdown} src={IconTrash} alt="icon dropdown" /> Delete 
+                                        </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                </Dropdown>              
+                            </div>
+                        </Card>   
+                    )
+                }}
+            </Draggable>
+                 
+            {/* modal delete */}
+            <Modal 
+                isConfirm
+                buttonSubmitTitle="Delete"
+                title="Delete Task"
+                show={showModalConfirm} 
+                onSubmit={handleOnDelete}
+                onHide={handleCloseModalConfirm} >
+                <p className={style.confirmModalDesc}>Are you sure want to delete this task? your action can’t be reverted.</p>
+            </Modal>   
 
-                {/* dropdown Menu */}
-                <Dropdown>
-                    <Dropdown.Toggle as={CustomToggle} />
-                    <Dropdown.Menu align="end" className={style.dropdownMenu}>
-                        {
-                            todos.data.length !== indexGroup+1 ?
-                            <Dropdown.Item 
-                                onClick={() => handleOnMove(indexGroup+1)} 
-                                className={style.dropdownLink}> 
-                                <img className={style.iconDropdown} src={IconArrowRight} alt="icon dropdown" /> Move Right 
-                            </Dropdown.Item> : null
-                        }
-                        {
-                            indexGroup !== 0 ?
-                            <Dropdown.Item 
-                                onClick={() => handleOnMove(indexGroup-1)} 
-                                className={style.dropdownLink}> 
-                                <img className={style.iconDropdown} src={IconArrowLeft} alt="icon dropdown" /> Move Left 
-                            </Dropdown.Item> : null
-                        }
-                        <Dropdown.Item 
-                            className={style.dropdownLink} 
-                            onClick={() => {
-                                setForm({
-                                    name : task.name,
-                                    progress_percentage : task.progress_percentage
-                                })
-                                handleShowModalUpdate()
-                            }}> 
-                            <img className={style.iconDropdown} src={IconEdit} alt="icon dropdown" /> Edit 
-                        </Dropdown.Item>
-                        <Dropdown.Item 
-                            onClick={handleShowModalConfirm} 
-                            className={style.dropdownLink}> 
-                            <img className={style.iconDropdown} src={IconTrash} alt="icon dropdown" /> Delete 
-                        </Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-
-                {/* modal delete */}
-                <Modal 
-                    isConfirm
-                    buttonSubmitTitle="Delete"
-                    title="Delete Task"
-                    show={showModalConfirm} 
-                    onSubmit={handleOnDelete}
-                    onHide={handleCloseModalConfirm} >
-                    <p className={style.confirmModalDesc}>Are you sure want to delete this task? your action can’t be reverted.</p>
-                </Modal>   
-
-                {/* modal update */}
-                <Modal 
-                    buttonSubmitTitle="Save Change"
-                    title="Edit Task"
-                    show={showModalUpdate} 
-                    onSubmit={handleOnUpdate}
-                    onHide={handleCloseModalUpdate} >
+            {/* modal update */}
+            <Modal 
+                buttonSubmitTitle="Save Change"
+                title="Edit Task"
+                show={showModalUpdate} 
+                onSubmit={handleOnUpdate}
+                onHide={handleCloseModalUpdate} >
+                <Input
+                    onChange={handleChange}  
+                    value={form.name}
+                    label="Task Name" 
+                    id="name"
+                    placeHolder="Type your task name" />
+                <div className="w-50">
                     <Input
                         onChange={handleChange}  
-                        value={form.name}
-                        label="Task Name" 
-                        id="name"
-                        placeHolder="Type your task name" />
-                    <div className="w-50">
-                        <Input
-                            onChange={handleChange}  
-                            value={form.progress_percentage}
-                            type="number"
-                            label="Progress" 
-                            id="progress_percentage"
-                            placeHolder="Type your progress" />
-                    </div>
-                </Modal>               
-            </div>
-        </Card> 
+                        value={form.progress_percentage}
+                        type="number"
+                        label="Progress" 
+                        id="progress_percentage"
+                        placeHolder="Type your progress" />
+                </div>
+            </Modal> 
+        </>
     )
 }
 

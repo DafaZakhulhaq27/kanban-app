@@ -109,6 +109,31 @@ export const moveTaskItem = createAsyncThunk("task/move", async (params) => {
     }
 });
 
+export const dragTaskItem = createAsyncThunk("task/drag", async (params) => {
+  try {
+    const response = await axios.patch(`/todos/${params.idGroup}/items/${params.idTask}`, params.form,{
+      headers: { Authorization: `Bearer ${TOKEN}` },
+    });
+
+    toast('Move Task Item Success', toastSuccess)
+
+    return {
+      index : params.index,
+      indexPrev : params.indexPrev,
+      indexNext : params.indexNext,
+      response : response.data
+    };      
+  } catch (err) {
+    toast(errorResponse(err), toastError)
+    return {
+      index : params.index,
+      indexPrev : params.indexPrev,
+      indexNext : params.indexNext,
+      response : errorResponse(err)
+    }; 
+  }
+});
+
 export const updateTaskItem = createAsyncThunk("task/update", async (params) => {
     try {
       const response = await axios.patch(`/todos/${params.idGroup}/items/${params.idTask}`, params.form,{

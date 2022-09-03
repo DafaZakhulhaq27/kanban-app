@@ -1,11 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 import initialState from "./initialState";
-import { addTaskItem, addTodo, deleteTaskItem, fetchTaskItem, fetchTodo, moveTaskItem, updateTaskItem } from "./todosActions";
+import { addTaskItem, addTodo, deleteTaskItem, dragTaskItem, fetchTaskItem, fetchTodo, moveTaskItem, updateTaskItem } from "./todosActions";
 
 const todosSlice = createSlice({
     name: "todos",
     initialState,
-    reducers: {},
+    reducers: {
+      draggedTask: (state,action) => {
+        const index = action.payload.index ;
+        const indexPrev = action.payload.indexPrev ;
+        const indexNext = action.payload.indexNext ;
+        const task = action.payload.task ;
+
+        state.statusAction = "succeeded";
+        state.data[indexPrev].items.splice(index,1) ;
+        state.data[indexNext].items.unshift(task) ;
+        state.error = null;      
+      },
+    },
     extraReducers(builder) {
       builder.addCase(fetchTodo.pending, (state) => {
         state.status = "loading";
@@ -97,6 +109,30 @@ const todosSlice = createSlice({
             state.error = action.payload;
         });
 
+        // drag task
+        builder.addCase(dragTaskItem.pending, (state) => {
+          state.statusAction = "loading";
+        });
+        builder.addCase(dragTaskItem.fulfilled, (state, action) => {
+            const indexNext = action.payload.indexNext ;
+            const task = action.payload.response ;
+
+            state.statusAction = "succeeded";
+            state.data[indexNext].items[0] = task ;
+            state.error = null;
+        });
+        builder.addCase(dragTaskItem.rejected, (state, action) => {
+            const index = action.payload.index ;
+            const indexPrev = action.payload.indexPrev ;
+            const indexNext = action.payload.indexNext ;
+            const task = action.payload.response ;
+
+            state.data[indexPrev].items[index] = task ;
+            state.data[indexNext].items.splice(0,1) ;
+            state.statusAction = "failed";
+            state.error = action.payload;
+        });
+
         // update task
         builder.addCase(updateTaskItem.pending, (state) => {
             state.statusAction = "loading";
@@ -105,6 +141,7 @@ const todosSlice = createSlice({
             const index = action.payload.index ;
             const indexGroup = action.payload.indexGroup ;
             const task = action.payload.response ;
+            
 
             state.statusAction = "succeeded";
             state.data[indexGroup].items[index] = task ;
@@ -136,4 +173,5 @@ const todosSlice = createSlice({
   });
 
   export const todosData = (state) => state.todos;
+  export const { draggedTask } = todosSlice.actions;
   export default todosSlice.reducer;
