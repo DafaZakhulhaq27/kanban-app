@@ -6,6 +6,7 @@ In this project I use several additional packages to make my work easier, here's
 2. **Styling** : react-boostrap, react-toastify,sass
 3. **Navigation** : react-router-dom
 4. **Data Fetching** : axios, jwt-decode 
+5. **Drag n Drop** : react-beautiful-dnd
 
 Here are the challenges I experienced and how I solved them :
 
